@@ -1,0 +1,25 @@
+name: 社媒监控推送
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          
+      - name: Install dependencies
+        run: pip install feedparser requests
+        
+      - name: Run monitor
+        run: python bot.py
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
